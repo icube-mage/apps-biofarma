@@ -1,0 +1,58 @@
+{
+  "name": "biofarma",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "ios": "ENVFILE=.env.prd react-native run-ios",
+    "ios:dev": "ENVFILE=.env.dev react-native run-ios",
+    "ios:stg": "ENVFILE=.env.stg react-native run-ios",
+    "ios:react": "react-native run-ios",
+    "android": "ENVFILE=.env.prd react-native run-android",
+    "android:dev": "ENVFILE=.env.dev react-native run-android",
+    "android:stg": "ENVFILE=.env.stg react-native run-android",
+    "android:react": "react-native run-android",
+    "build": "cd android && ENVFILE=.env.prd ./gradlew assembleRelease",
+    "build:dev": "cd android && ENVFILE=.env.dev ./gradlew assembleRelease",
+    "build:stg": "cd android && ENVFILE=.env.stg ./gradlew assembleRelease",
+    "build:bundle": "cd android && ENVFILE=.env.prd ./gradlew bundleRelease",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "pod": "cd ios && pod install",
+    "pod:i": "cd ios && pod install",
+    "pod:i:m1": "cd ios && arch -x86_64 pod install",
+    "pod:i:m1:verbose": "cd ios && arch -x86_64 pod install --verbose",
+    "pod:u": "cd ios && pod install --repo-update",
+    "pod:u:m1": "cd ios && arch -x86_64 pod install --repo-update",
+    "pod:c:m1": "rm -rf ios/Pods && rm -rf ios/Podfile.lock && yarn pod:install:m1",
+    "clean": "rm -rf node_modules && yarn install && rm -rf ios/Pods && rm -rf ios/Podfile.lock && yarn pod:i",
+    "clean:m1": "rm -rf node_modules && yarn install && rm -rf ios/Pods && rm -rf ios/Podfile.lock && yarn pod:i:m1",
+    "clean:m1:pod": "rm -rf node_modules && yarn install && rm -rf ios/Pods && yarn pod:i:m1",
+    "clean:m1:verbose": "rm -rf node_modules && yarn install && rm -rf ios/Pods && rm -rf ios/Podfile.lock && yarn pod:i:m1:verbose",
+    "clean:lock": "rm -rf node_modules && rm -rf yarn.lock && yarn install && rm -rf ios/Pods && rm -rf ios/Podfile.lock && yarn pod:i",
+    "clean:lock:m1": "rm -rf node_modules && rm -rf yarn.lock && yarn install && rm -rf ios/Pods && rm -rf ios/Podfile.lock && yarn pod:i:m1",
+    "clean:lock:m1:verbose": "rm -rf node_modules && rm -rf yarn.lock && yarn install && rm -rf ios/Pods && rm -rf ios/Podfile.lock && yarn pod:i:m1:verbose",
+    "bundle:js:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
+    "bundle:js:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
+  },
+  "dependencies": {
+    "react": "18.1.0",
+    "react-native": "0.70.6",
+    "react-native-config": "^1.4.11",
+    "react-native-permissions": "^3.6.1",
+    "react-native-webview": "^11.26.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.32.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "0.72.3",
+    "react-test-renderer": "18.1.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
