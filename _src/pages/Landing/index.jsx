@@ -1,7 +1,13 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import Config from 'react-native-config';
 import useRequestPermission from '../../hooks/useRequestPermission';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {WebView} from 'react-native-webview';
+
+const styles = StyleSheet.create({
+  fullScreen: {flex: 1},
+});
 
 const Landing = () => {
   useRequestPermission();
@@ -19,13 +25,17 @@ const Landing = () => {
   };
 
   return (
-    <WebView
-      ref={webViewRef}
-      source={{uri: webViewURL}}
-      geolocationEnabled={true}
-      javaScriptEnabled={true}
-      onNavigationStateChange={onNavigationStateChange}
-    />
+    <SafeAreaProvider>
+      <SafeAreaView edges={['top']} />
+      <WebView
+        style={styles.fullScreen}
+        ref={webViewRef}
+        source={{uri: webViewURL}}
+        geolocationEnabled={true}
+        javaScriptEnabled={true}
+        onNavigationStateChange={onNavigationStateChange}
+      />
+    </SafeAreaProvider>
   );
 };
 
