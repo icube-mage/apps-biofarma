@@ -1,4 +1,4 @@
-package com.biofarma.newarchitecture;
+package id.medbiz.biofarma.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.biofarma.BuildConfig;
-import com.biofarma.newarchitecture.components.MainComponentsRegistry;
-import com.biofarma.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import id.medbiz.biofarma.BuildConfig;
+import id.medbiz.biofarma.newarchitecture.components.MainComponentsRegistry;
+import id.medbiz.biofarma.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
