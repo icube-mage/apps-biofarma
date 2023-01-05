@@ -13,7 +13,7 @@ const Landing = () => {
   useRequestPermission();
   const webViewURL = Config.PWA_BASE_URL;
   const webViewRef = React.useRef(null);
-
+  console.log('webViewURL', webViewURL);
   /**
    * ---------------------------------------------------- *
    * @function onNavigationStateChange
