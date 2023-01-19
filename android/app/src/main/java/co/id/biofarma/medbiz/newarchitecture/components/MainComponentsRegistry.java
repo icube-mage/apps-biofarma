@@ -1,4 +1,4 @@
-package id.medbiz.biofarma.newarchitecture.components;
+package co.id.biofarma.medbiz.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

@@ -13,7 +13,8 @@ const Landing = () => {
   useRequestPermission();
   const webViewURL = Config.PWA_BASE_URL;
   const webViewRef = React.useRef(null);
-  console.log('webViewURL', webViewURL);
+  const INJECTEDJAVASCRIPT = `const meta = document.createElement('meta'); meta.setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `
+
   /**
    * ---------------------------------------------------- *
    * @function onNavigationStateChange
@@ -30,10 +31,20 @@ const Landing = () => {
       <WebView
         style={styles.fullScreen}
         ref={webViewRef}
+        originWhitelist={['*']}
         source={{uri: webViewURL}}
         geolocationEnabled={true}
         javaScriptEnabled={true}
         onNavigationStateChange={onNavigationStateChange}
+        androidHardwareAccelerationDisabled={false}
+        cacheEnabled={false}
+        overScrollMode="never"
+        hideKeyboardAccessoryView
+        injectedJavaScript={INJECTEDJAVASCRIPT}
+        onError={(syntheticEvent) => {
+            const { nativeEvent } = syntheticEvent;
+            console.warn('[err] webview', nativeEvent);
+        }}
       />
     </SafeAreaProvider>
   );
