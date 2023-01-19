@@ -1,4 +1,4 @@
-package id.medbiz.biofarma;
+package co.id.biofarma.medbiz;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
