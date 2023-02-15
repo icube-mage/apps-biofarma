@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Button, RefreshControl, ScrollView, View, Text} from 'react-native';
+import {
+  Button,
+  RefreshControl,
+  ScrollView,
+  View,
+  Text,
+  Platform,
+} from 'react-native';
 import Config from 'react-native-config';
 import useRequestPermission from '../../hooks/useRequestPermission';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
@@ -34,8 +41,10 @@ const Landing = () => {
    */
   const onRefresh = () => {
     setIsRefreshing(true);
-    webViewRef.current.clearCache(true);
-    webViewRef.current.reload();
+    if (Platform.OS !== 'ios') {
+      webViewRef.current.clearCache(true);
+      webViewRef.current.reload();
+    }
     setIsRefreshing(false);
   };
 
