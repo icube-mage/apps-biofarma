@@ -12,6 +12,7 @@ target 'Medbiz' do
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
 
   # Flags change depending on the env values.
   flags = get_default_flags()
