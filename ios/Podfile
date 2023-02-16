@@ -9,9 +9,11 @@ target 'Medbiz' do
 
   # react-native added library
   permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
+  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
 
   # Flags change depending on the env values.
   flags = get_default_flags()
