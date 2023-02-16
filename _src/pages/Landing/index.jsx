@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {
   Button,
+  NativeModules,
+  Platform,
   RefreshControl,
   ScrollView,
-  View,
   Text,
-  Platform,
+  View,
 } from 'react-native';
 import Config from 'react-native-config';
 import useRequestPermission from '../../hooks/useRequestPermission';
@@ -39,10 +40,13 @@ const Landing = () => {
    * @summary on pull to refresh
    * ---------------------------------------------------- *
    */
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setIsRefreshing(true);
-    if (Platform.OS !== 'ios') {
+    if (Platform.OS === 'android') {
       webViewRef.current.clearCache(true);
+      webViewRef.current.reload();
+    } else {
+      await NativeModules.ClearWebviewCache.clearWebviewIOS();
       webViewRef.current.reload();
     }
     setIsRefreshing(false);
