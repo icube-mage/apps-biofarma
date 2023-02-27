@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  BackHandler,
   Button,
   NativeModules,
   Platform,
   RefreshControl,
   ScrollView,
   Text,
+  ToastAndroid,
   View,
 } from 'react-native';
 import Config from 'react-native-config';
@@ -15,13 +17,37 @@ import {WebView} from 'react-native-webview';
 
 const Landing = () => {
   useRequestPermission();
+  let backPressCount = 0;
   const webViewRef = React.useRef(null);
+  const [isCanGoBack, setIsCanGoBack] = useState(false);
   const [isEnabled, setEnabled] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isWebViewError, setIsWebViewError] = useState(false);
   const [scrollViewHeight, setScrollViewHeight] = useState(0);
   const [webViewURL, setWebViewURL] = useState(Config.PWA_BASE_URL);
-  const INJECTEDJAVASCRIPT = `const meta = document.createElement('meta'); meta.setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `;
+  const INJECTED_JAVASCRIPT = `const meta = document.createElement('meta'); meta.setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `;
+  const USER_AGENT =
+    Platform.OS === 'android'
+      ? 'wrapper-pwa-biofarma-android'
+      : 'wrapper-pwa-biofarma-ios';
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    };
+  }, []);
+
+  /**
+   * ---------------------------------------------------- *
+   * @function onLoadProgress
+   * @summary on load progress webview
+   * ---------------------------------------------------- *
+   */
+  const onLoadProgress = event => {
+    const {nativeEvent} = event;
+    setIsCanGoBack(nativeEvent?.canGoBack);
+  };
 
   /**
    * ---------------------------------------------------- *
@@ -31,7 +57,6 @@ const Landing = () => {
    */
   const onNavigationStateChange = webViewState => {
     const url = webViewState?.url;
-    setWebViewURL(url);
   };
 
   /**
@@ -61,6 +86,38 @@ const Landing = () => {
   const onReload = () => {
     setWebViewURL(Config.PWA_BASE_URL);
     setIsWebViewError(false);
+  };
+
+  /**
+   * ---------------------------------------------------- *
+   * @function onBackPress
+   * @summary on handle backpress button
+   * ---------------------------------------------------- *
+   */
+  const onBackPress = () => {
+    // console.log('[d] isCanGoBack', isCanGoBack);
+    // if (isCanGoBack && webViewRef) {
+    //   console.log('[d] GO BACK');
+    //   webViewRef.current.goBack();
+    //   return true;
+    // } else if (!isCanGoBack && backPressCount < 1) {
+    //   console.log('[d] WARNING');
+    //   backPressCount += 1;
+    //   ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
+    //   setTimeout(() => {
+    //     backPressCount = 0;
+    //   }, 2000);
+    //   return true;
+    // } else {
+    //   console.log('[d] EXIT APP');
+    //   backPressCount = 0;
+    //   BackHandler.exitApp();
+    // }
+    if (webViewRef) {
+      webViewRef.current.goBack();
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -106,13 +163,14 @@ const Landing = () => {
             cacheEnabled={false}
             geolocationEnabled={true}
             hideKeyboardAccessoryView={true}
-            injectedJavaScript={INJECTEDJAVASCRIPT}
+            injectedJavaScript={INJECTED_JAVASCRIPT}
             javaScriptEnabled={true}
             onError={syntheticEvent => {
               const {nativeEvent} = syntheticEvent;
               setIsWebViewError(true);
               console.warn('[err] webview', nativeEvent);
             }}
+            onLoadProgress={onLoadProgress}
             onNavigationStateChange={onNavigationStateChange}
             onScroll={e => setEnabled(e.nativeEvent.contentOffset.y === 0)}
             originWhitelist={['*']}
@@ -120,7 +178,7 @@ const Landing = () => {
             ref={webViewRef}
             source={{uri: webViewURL}}
             style={{width: '100%', height: scrollViewHeight}}
-            userAgent="wrapper-pwa-biofarma"
+            userAgent={USER_AGENT}
           />
         )}
       </ScrollView>
