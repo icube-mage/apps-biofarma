@@ -7,7 +7,6 @@ import {
   RefreshControl,
   ScrollView,
   Text,
-  ToastAndroid,
   View,
 } from 'react-native';
 import Config from 'react-native-config';
@@ -17,9 +16,7 @@ import {WebView} from 'react-native-webview';
 
 const Landing = () => {
   useRequestPermission();
-  let backPressCount = 0;
   const webViewRef = React.useRef(null);
-  const [isCanGoBack, setIsCanGoBack] = useState(false);
   const [isEnabled, setEnabled] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isWebViewError, setIsWebViewError] = useState(false);
@@ -46,7 +43,6 @@ const Landing = () => {
    */
   const onLoadProgress = event => {
     const {nativeEvent} = event;
-    setIsCanGoBack(nativeEvent?.canGoBack);
   };
 
   /**
@@ -95,24 +91,6 @@ const Landing = () => {
    * ---------------------------------------------------- *
    */
   const onBackPress = () => {
-    // console.log('[d] isCanGoBack', isCanGoBack);
-    // if (isCanGoBack && webViewRef) {
-    //   console.log('[d] GO BACK');
-    //   webViewRef.current.goBack();
-    //   return true;
-    // } else if (!isCanGoBack && backPressCount < 1) {
-    //   console.log('[d] WARNING');
-    //   backPressCount += 1;
-    //   ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
-    //   setTimeout(() => {
-    //     backPressCount = 0;
-    //   }, 2000);
-    //   return true;
-    // } else {
-    //   console.log('[d] EXIT APP');
-    //   backPressCount = 0;
-    //   BackHandler.exitApp();
-    // }
     if (webViewRef) {
       webViewRef.current.goBack();
       return true;
