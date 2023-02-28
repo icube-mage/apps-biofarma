@@ -4,15 +4,15 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-public class AndroidPrintStringModule extends ReactContextBaseJavaModule {
-    AndroidPrintStringModule(ReactApplicationContext context) {
+public class IosPrintStringModule extends ReactContextBaseJavaModule {
+    IosPrintStringModule(ReactApplicationContext context) {
         super(context);
     }
 
     // MANDATORY
     @Override
     public String getName() {
-        return "AndroidPrintStringModule";
+        return "IosPrintStringModule";
     }
 
     @ReactMethod

@@ -38,26 +38,29 @@ const Landing = () => {
     };
   }, []);
 
-  /**
-   * ANDROID NATIVE MODULES
-   *
-   *
-   */
-  if (Platform.OS === 'android') {
-    NativeModules.AndroidPrintStringModule.getMyString(value =>
-      console.log('[ANDROID]', value),
-    );
-  }
-  /**
-   * IOS NATIVE MODULES
-   *
-   *
-   */
-  if (Platform.OS === 'ios') {
-    NativeModules.IosPrintStringModule.getMyString(value =>
-      console.log('[IOS]', value),
-    );
-  }
+  // /**
+  //  * ANDROID NATIVE MODULES
+  //  *
+  //  *
+  //  */
+  // if (Platform.OS === 'android') {
+  //   NativeModules.AndroidPrintStringModule.getMyString(value =>
+  //     console.log('[ANDROID]', value),
+  //   );
+  // }
+  // /**
+  //  * IOS NATIVE MODULES
+  //  *
+  //  *
+  //  */
+  // if (Platform.OS === 'ios') {
+  //   NativeModules.IosPrintStringModule.getMyString(value =>
+  //     console.log('[IOS]', value),
+  //   );
+  // }
+  NativeModules.IosPrintStringModule.getMyString(value =>
+    console.log('[IOS]', value),
+  );
 
   /**
    * ---------------------------------------------------- *

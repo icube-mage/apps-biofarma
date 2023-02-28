@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AndroidPrintStringPackage implements ReactPackage {
+public class IosPrintStringPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
@@ -20,7 +20,7 @@ public class AndroidPrintStringPackage implements ReactPackage {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new AndroidPrintStringModule(reactContext));
+        modules.add(new IosPrintStringModule(reactContext));
 
         return modules;
     }
