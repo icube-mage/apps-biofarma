@@ -8,6 +8,7 @@ import {
   RefreshControl,
   ScrollView,
   Text,
+  ToastAndroid,
   View,
 } from 'react-native';
 import Config from 'react-native-config';
@@ -18,6 +19,8 @@ import {WebView} from 'react-native-webview';
 const Landing = () => {
   useRequestPermission();
   const webViewRef = React.useRef(null);
+  const [backPressCount, setBackPressCount] = useState(0);
+  const [isCanGoBack, setIsCanGoBack] = useState(false);
   const [isEnabled, setEnabled] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isWebViewError, setIsWebViewError] = useState(false);
@@ -34,7 +37,7 @@ const Landing = () => {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     };
-  }, []);
+  }, [backPressCount, isCanGoBack]);
 
   /**
    * ---------------------------------------------------- *
@@ -44,6 +47,7 @@ const Landing = () => {
    */
   const onLoadProgress = event => {
     const {nativeEvent} = event;
+    setIsCanGoBack(nativeEvent?.canGoBack);
     if (IS_IOS) {
       const url = nativeEvent?.url;
       if (url.startsWith('https://seller.medbiz.id/login')) {
@@ -99,11 +103,21 @@ const Landing = () => {
    * ---------------------------------------------------- *
    */
   const onBackPress = () => {
-    if (webViewRef) {
+    if (isCanGoBack) {
       webViewRef.current.goBack();
       return true;
+    } else {
+      if (backPressCount === 0) {
+        setBackPressCount(1);
+        setTimeout(() => setBackPressCount(0), 2000);
+        ToastAndroid.show('Press one more time to exit', ToastAndroid.SHORT);
+        return true;
+      } else if (backPressCount === 1) {
+        setBackPressCount(0);
+        BackHandler.exitApp();
+        return false;
+      }
     }
-    return false;
   };
 
   return (
