@@ -3,6 +3,7 @@ import {
   BackHandler,
   Button,
   NativeModules,
+  Linking,
   Platform,
   RefreshControl,
   ScrollView,
@@ -22,11 +23,11 @@ const Landing = () => {
   const [isWebViewError, setIsWebViewError] = useState(false);
   const [scrollViewHeight, setScrollViewHeight] = useState(0);
   const [webViewURL, setWebViewURL] = useState(Config.PWA_BASE_URL);
+  const IS_IOS = Platform.OS === 'ios';
   const INJECTED_JAVASCRIPT = `const meta = document.createElement('meta'); meta.setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `;
-  const USER_AGENT =
-    Platform.OS === 'android'
-      ? 'wrapper-pwa-biofarma-android'
-      : 'wrapper-pwa-biofarma-ios';
+  const USER_AGENT = !IS_IOS
+    ? 'wrapper-pwa-biofarma-android'
+    : 'wrapper-pwa-biofarma-ios';
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', onBackPress);
@@ -43,6 +44,13 @@ const Landing = () => {
    */
   const onLoadProgress = event => {
     const {nativeEvent} = event;
+    if (IS_IOS) {
+      const url = nativeEvent?.url;
+      if (url.startsWith('https://seller.medbiz.id/login')) {
+        Linking.openURL(url);
+        webViewRef.current.goBack();
+      }
+    }
   };
 
   /**
@@ -63,7 +71,7 @@ const Landing = () => {
    */
   const onRefresh = async () => {
     setIsRefreshing(true);
-    if (Platform.OS === 'android') {
+    if (!IS_IOS) {
       webViewRef.current.clearCache(true);
       webViewRef.current.reload();
     } else {
