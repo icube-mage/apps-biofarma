@@ -28,7 +28,7 @@ const useRequestPermission = () => {
     if (mount.current) {
       requestMultiple(PLATFORM_PERMISSIONS)
         .then(res => {
-          console.log('[res] request permission', res);
+          // console.log('[res] request permission', res);
         })
         .catch(err => {
           console.log('[err] request permission', err);

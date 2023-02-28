@@ -16,6 +16,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		96BD8CBA299DDA9200993679 /* ClearWebviewCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BD8CB9299DDA9200993679 /* ClearWebviewCache.m */; };
 		96BD8CBB299DDA9200993679 /* ClearWebviewCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BD8CB9299DDA9200993679 /* ClearWebviewCache.m */; };
+		96BD8CC229ADC47900993679 /* IosPrintStringModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BD8CC129ADC47900993679 /* IosPrintStringModule.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-Medbiz-MedbizTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Medbiz-MedbizTests.release.xcconfig"; path = "Target Support Files/Pods-Medbiz-MedbizTests/Pods-Medbiz-MedbizTests.release.xcconfig"; sourceTree = "<group>"; };
 		96BD8CB8299DDA4000993679 /* ClearWebviewCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClearWebviewCache.h; sourceTree = "<group>"; };
 		96BD8CB9299DDA9200993679 /* ClearWebviewCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClearWebviewCache.m; sourceTree = "<group>"; };
+		96BD8CC029ADC45000993679 /* IosPrintStringModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IosPrintStringModule.h; sourceTree = "<group>"; };
+		96BD8CC129ADC47900993679 /* IosPrintStringModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IosPrintStringModule.m; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -98,6 +101,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				96BD8CB8299DDA4000993679 /* ClearWebviewCache.h */,
 				96BD8CB9299DDA9200993679 /* ClearWebviewCache.m */,
+				96BD8CC029ADC45000993679 /* IosPrintStringModule.h */,
+				96BD8CC129ADC47900993679 /* IosPrintStringModule.m */,
 			);
 			name = Medbiz;
 			sourceTree = "<group>";
@@ -421,6 +426,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				96BD8CBA299DDA9200993679 /* ClearWebviewCache.m in Sources */,
+				96BD8CC229ADC47900993679 /* IosPrintStringModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
