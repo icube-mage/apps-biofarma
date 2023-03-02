@@ -50,9 +50,13 @@ const Landing = () => {
     setIsCanGoBack(nativeEvent?.canGoBack);
     if (IS_IOS) {
       const url = nativeEvent?.url;
-      if (url.startsWith('https://seller.medbiz.id/login')) {
-        Linking.openURL(url);
-        webViewRef.current.goBack();
+      if (
+        url.startsWith('https://seller.medbiz.id/login') ||
+        url.startsWith(`${Config.PWA_BASE_URL}/ar`)
+      ) {
+        Linking.openURL(url)
+          .then(() => webViewRef.current.goBack())
+          .catch(() => webViewRef.current.goBack());
       }
     }
   };
