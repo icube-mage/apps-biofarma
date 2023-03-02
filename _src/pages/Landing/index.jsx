@@ -45,8 +45,8 @@ const Landing = () => {
    * @summary on load progress webview
    * ---------------------------------------------------- *
    */
-  const onLoadProgress = event => {
-    const {nativeEvent} = event;
+  const onLoadProgress = syntheticEvent => {
+    const {nativeEvent} = syntheticEvent;
     setIsCanGoBack(nativeEvent?.canGoBack);
     if (IS_IOS) {
       const url = nativeEvent?.url;
@@ -180,6 +180,7 @@ const Landing = () => {
             originWhitelist={['*']}
             overScrollMode="never"
             ref={webViewRef}
+            setBuiltInZoomControls={false}
             source={{uri: webViewURL}}
             style={{width: '100%', height: scrollViewHeight}}
             userAgent={USER_AGENT}
