@@ -47,16 +47,18 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-  	<string>YOUR TEXT</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSMicrophoneUsageDescription</key>
-  	<string>YOUR TEXT</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Medbiz requires access to the camera to display products with Augmented Reality, upload image, and more .</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Medbiz needs access to your location to set your latest location.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Medbiz needs access to your location to set your latest location.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Medbiz needs access to your location to set your latest location.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Medbiz requires access to the microphone so you can use your voice to search for products.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Medbiz requires access to the microphone so you can use your voice to search for products.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
