@@ -7,10 +7,14 @@
  */
 
 import React from 'react';
+import SplashScreen from 'react-native-splash-screen';
 import Landing from './pages/Landing';
 
 const App = () => {
-  return <Landing />;
+    React.useEffect(() => {
+        SplashScreen.hide();
+    }, []);
+    return <Landing />;
 };
 
 export default App;
