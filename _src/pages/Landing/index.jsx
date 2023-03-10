@@ -15,6 +15,8 @@ import Config from 'react-native-config';
 import useRequestPermission from '../../hooks/useRequestPermission';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {WebView} from 'react-native-webview';
+import ReactNativeBlobUtil from 'react-native-blob-util';
+import RNFS, {downloadFile} from 'react-native-fs';
 
 const Landing = () => {
   useRequestPermission();
@@ -45,7 +47,7 @@ const Landing = () => {
    * @summary on load progress webview
    * ---------------------------------------------------- *
    */
-  const onLoadProgress = syntheticEvent => {
+  const onLoadProgress = async syntheticEvent => {
     const {nativeEvent} = syntheticEvent;
     setIsCanGoBack(nativeEvent?.canGoBack);
     if (IS_IOS) {
@@ -58,6 +60,9 @@ const Landing = () => {
           .then(() => webViewRef.current.goBack())
           .catch(() => webViewRef.current.goBack());
       }
+    }
+    if (nativeEvent?.url.startsWith(`${Config.PWA_BASE_URL}`)) {
+      // onDownloadFile();
     }
   };
 
@@ -124,6 +129,64 @@ const Landing = () => {
     }
   };
 
+  /**
+   * ---------------------------------------------------- *
+   * @function onDownloadFile
+   * @summary on download file
+   * ---------------------------------------------------- *
+   */
+  const onDownloadFile = url => {
+    ReactNativeBlobUtil.fetch('GET', url)
+      .then(async res => {
+        // Get file name
+        const contentDispositionHeader =
+          res.info().headers['Content-Disposition'];
+        const regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const match = regex.exec(contentDispositionHeader);
+        let fileName = match[1].replace(/['"]/g, '');
+
+        // Adding timestamp to the file name
+        const timestamp = new Date().getTime();
+        const newFileName = fileName.replace('.', '_' + timestamp + '.');
+
+        const status = res.info().status;
+        if (status == 200) {
+          const filePath = `${RNFS.DownloadDirectoryPath}/${newFileName}`;
+          await RNFS.writeFile(filePath, res.data, 'base64')
+            .then(() => {
+              console.log('[d] FILE WRITTEN!');
+            })
+            .catch(err => {
+              console.log('[err] RNFS writeFile', err.message);
+            });
+        }
+      })
+      .catch(errorMessage => {
+        console.log('[err] RNBlob', errorMessage);
+      });
+  };
+
+  /**
+   * ---------------------------------------------------- *
+   * @function onMessage
+   * @summary on handle onMessage
+   * ---------------------------------------------------- *
+   */
+  const onMessage = event => {
+    if (event?.nativeEvent?.data) {
+      const parsedData = JSON.parse(event?.nativeEvent?.data);
+      if (parsedData?.type) {
+        switch (parsedData?.type) {
+          case 'DOWNLOAD_ATTACHMENT':
+            onDownloadFile(parsedData?.url);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView edges={['top']} />
@@ -175,6 +238,7 @@ const Landing = () => {
               console.warn('[err] webview', nativeEvent);
             }}
             onLoadProgress={onLoadProgress}
+            onMessage={onMessage}
             onNavigationStateChange={onNavigationStateChange}
             onScroll={e => setEnabled(e.nativeEvent.contentOffset.y === 0)}
             originWhitelist={['*']}
