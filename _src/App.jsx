@@ -11,8 +11,16 @@ import SplashScreen from 'react-native-splash-screen';
 import Landing from './pages/Landing';
 
 const App = () => {
+    const timeoutRef = React.useRef(null);
+
     React.useEffect(() => {
-        SplashScreen.hide();
+        timeoutRef.current = setTimeout(() => {
+            SplashScreen.hide();
+        }, 2000);
+
+        return () => {
+            clearTimeout(timeoutRef.current);
+        }
     }, []);
     return <Landing />;
 };
