@@ -16,7 +16,8 @@ import useRequestPermission from '../../hooks/useRequestPermission';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {WebView} from 'react-native-webview';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import RNFS, {downloadFile} from 'react-native-fs';
+import RNFS from 'react-native-fs';
+import notifee from '@notifee/react-native';
 
 const Landing = () => {
   useRequestPermission();
@@ -138,23 +139,33 @@ const Landing = () => {
   const onDownloadFile = url => {
     ReactNativeBlobUtil.fetch('GET', url)
       .then(async res => {
-        // Get file name
-        const contentDispositionHeader =
-          res.info().headers['Content-Disposition'];
-        const regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        const match = regex.exec(contentDispositionHeader);
-        let fileName = match[1].replace(/['"]/g, '');
-
-        // Adding timestamp to the file name
-        const timestamp = new Date().getTime();
-        const newFileName = fileName.replace('.', '_' + timestamp + '.');
-
         const status = res.info().status;
         if (status == 200) {
-          const filePath = `${RNFS.DownloadDirectoryPath}/${newFileName}`;
+          const contentDispositionHeader =
+            res.info().headers['Content-Disposition'];
+          let fileName = '';
+          if (contentDispositionHeader) {
+            // Get file name if we need to generate the file from the URL by ourself
+            const regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            const match = regex.exec(contentDispositionHeader);
+            fileName = match[1].replace(/['"]/g, '');
+          } else {
+            // Get file name if we have the specific path file URL
+            const splittedURL = url.split('/');
+            fileName = splittedURL[splittedURL.length - 1];
+          }
+
+          // Adding timestamp to the file name
+          const timestamp = new Date().getTime();
+          fileName = fileName.replace('.', '_' + timestamp + '.');
+
+          const filePath = `${RNFS.DownloadDirectoryPath}/${fileName}`;
           await RNFS.writeFile(filePath, res.data, 'base64')
             .then(() => {
-              console.log('[d] FILE WRITTEN!');
+              onShowNotification({
+                title: 'Unduh Dokumen Berhasil',
+                body: fileName,
+              });
             })
             .catch(err => {
               console.log('[err] RNFS writeFile', err.message);
@@ -185,6 +196,32 @@ const Landing = () => {
         }
       }
     }
+  };
+
+  /**
+   * ---------------------------------------------------- *
+   * @function onShowNotification
+   * @summary show a local notification
+   * ---------------------------------------------------- *
+   */
+  const onShowNotification = async ({title, body}) => {
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: title,
+      body: body,
+      android: {
+        channelId,
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
   };
 
   return (
